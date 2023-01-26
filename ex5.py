@@ -62,24 +62,24 @@ class CaesarCipher:
         self.key = newKey
 
 
-class VigenereCypher(CaesarCipher):
+class VigenereCipher():
     def __init__(self, key):
-    #     self.key = key
-        # self.alteredList = []
-        # self.alteredString = ""
-        # self.lowerCase = [chr(i) for i in range(ord('a'), ord('z')+1)]
-        # self.upperCase = [chr(i) for i in range(ord('A'), ord('Z')+1)]
+        self.key = key
+        self.alteredList = []
+        self.alteredString = ""
+        self.lowerCase = [chr(i) for i in range(ord('a'), ord('z')+1)]
+        self.upperCase = [chr(i) for i in range(ord('A'), ord('Z')+1)]
         self.keySize = key.size()
-    cypher = CaesarCipher(0)
+        self.cipher = CaesarCipher(0)
 
     def encryptLetter(self, letter, oneTimeKey):
-        self.cypher.changeKey(oneTimeKey)
-        alteredLetter = self.cypher.encrypt(letter)
+        self.cipher.changeKey(oneTimeKey)
+        alteredLetter = self.cipher.encrypt(letter)
         return alteredLetter
 
     def decryptLetter(self, letter, oneTimeKey):
-        self.cypher.changeKey(oneTimeKey)
-        alteredLetter = self.cypher.decrypt(letter)
+        self.cipher.changeKey(oneTimeKey)
+        alteredLetter = self.cipher.decrypt(letter)
         return alteredLetter
 
     def encrypt(self, string):
@@ -118,7 +118,7 @@ def getVigenereFromStr(keyString):
     for letter in keyString:
         keyList.append(alphabet.index(letter))
 
-    vigenere = VigenereCypher(keyList)
+    vigenere = VigenereCipher(keyList)
     return vigenere
 
 def processDirectory(dir_path):
@@ -129,7 +129,7 @@ def processDirectory(dir_path):
     if loaded_dict['type'] == "Caesar":
         caesar_cipher = CaesarCipher(loaded_dict['key'])
     elif loaded_dict['type'] == "Vigenere":
-        vigenere_cipher = VigenereCypher(loaded_dict['key'])
+        vigenere_cipher = VigenereCipher(loaded_dict['key'])
     if loaded_dict['mode'] == "encrypt":
         for filename in os.listdir(dir_path):
                     if filename.endswith(".txt"):
