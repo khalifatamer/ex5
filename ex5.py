@@ -63,15 +63,13 @@ class CaesarCipher:
 
 
 class VigenereCypher(CaesarCipher):
-    # def __init__(self, key):
+    def __init__(self, key):
     #     self.key = key
         # self.alteredList = []
         # self.alteredString = ""
         # self.lowerCase = [chr(i) for i in range(ord('a'), ord('z')+1)]
         # self.upperCase = [chr(i) for i in range(ord('A'), ord('Z')+1)]
-    def getSize(self):
-        return self.key.size()
-    keySize = getSize()
+        self.keySize = key.size()
     cypher = CaesarCipher(0)
 
     def encryptLetter(self, letter, oneTimeKey):
