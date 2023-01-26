@@ -1,3 +1,6 @@
+import os
+import json
+
 ALPHABET_LETTERS = 26
 
 def isUppercase(letter):
@@ -121,4 +124,36 @@ def getVigenereFromStr(keyString):
     return vigenere
 
 def processDirectory(dir_path):
-    
+    file_path = os.path.join(dir_path, "config.json")
+    with open(file_path, "r") as file:
+        loaded_dict = json.load(file)
+
+    if loaded_dict['type'] == "Caesar":
+        caesar_cipher = CaesarCipher(loaded_dict['key'])
+    elif loaded_dict['type'] == "Vigenere":
+        vigenere_cipher = VigenereCypher(loaded_dict['key'])
+    if loaded_dict['mode'] == "encrypt":
+        for filename in os.listdir(dir_path):
+                    if filename.endswith(".txt"):
+                        with open(file_path, "r") as f:
+                            data = f.read()
+                            if loaded_dict['type'] == "Caesar":
+                                data = caesar_cipher.encrypt(data)
+                            elif loaded_dict['type'] == "Vigenere":
+                                data = vigenere_cipher.encrypt(data)
+                            filename -= ".txt"
+                            with open(filename + ".enc", "w") as w:
+                                w.write(data)
+
+    if loaded_dict['mode'] == "decrypt":
+        for filename in os.listdir(dir_path):
+                    if filename.endswith(".enc"):
+                        with open(file_path, "r") as f:
+                            data = f.read()
+                            if loaded_dict['type'] == "Caesar":
+                                data = caesar_cipher.decrypt(data)
+                            elif loaded_dict['type'] == "Vigenere":
+                                data = vigenere_cipher.decrypt(data)
+                            filename -= ".enc"
+                            with open(filename + ".txt", "w") as w:
+                                w.write(data)
