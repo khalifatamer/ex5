@@ -60,14 +60,16 @@ class CaesarCipher:
 
 
 class VigenereCypher(CaesarCipher):
-    def __init__(self, key):
-        self.key = key
+    # def __init__(self, key):
+    #     self.key = key
         # self.alteredList = []
         # self.alteredString = ""
         # self.lowerCase = [chr(i) for i in range(ord('a'), ord('z')+1)]
         # self.upperCase = [chr(i) for i in range(ord('A'), ord('Z')+1)]
-        self.keySize = key.size()
-        self.cypher = CaesarCipher(0)
+    def getSize(self):
+        return self.key.size()
+    keySize = getSize()
+    cypher = CaesarCipher(0)
 
     def encryptLetter(self, letter, oneTimeKey):
         self.cypher.changeKey(oneTimeKey)
@@ -103,12 +105,12 @@ class VigenereCypher(CaesarCipher):
         return self.alteredString
 
 def getVigenereFromStr(keyString):
-    lowerCase = [chr(i) for i in range(ord('a'), ord('z') + 1)]
-    upperCase = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
+    lowercase = [chr(i) for i in range(ord('a'), ord('z') + 1)]
+    uppercase = [chr(i) for i in range(ord('A'), ord('Z') + 1)]
     alphabet = []
-    for elem in lowerCase:
+    for elem in lowercase:
         alphabet.append(elem)
-    for elem in upperCase:
+    for elem in uppercase:
         alphabet.append(elem)
 
     keyList = []
@@ -117,3 +119,6 @@ def getVigenereFromStr(keyString):
 
     vigenere = VigenereCypher(keyList)
     return vigenere
+
+def processDirectory(dir_path):
+    
