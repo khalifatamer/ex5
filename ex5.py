@@ -27,18 +27,12 @@ class CaesarCipher:
         for letter in string:
             if isUppercase(letter):
                 index = self.uppercase.index(letter)
-                self.alteredList.append(
-                    (self.uppercase[((index + self.key) % ALPHABET_LETTERS) + ALPHABET_LETTERS]) % ALPHABET_LETTERS)
+                self.alteredString += ((self.uppercase[((index + self.key) % ALPHABET_LETTERS)]))
             elif isLowercase(letter):
                 index = self.lowercase.index(letter)
-                self.alteredList.append(
-                    (self.lowercase[((index + self.key) % ALPHABET_LETTERS) + ALPHABET_LETTERS]) % ALPHABET_LETTERS)
+                self.alteredString += ((self.lowercase[((index + self.key) % ALPHABET_LETTERS)]))
             else:
-                self.alteredList.append(letter)
-
-
-        for elem in self.alteredList:
-            self.alteredString += elem
+                self.alteredString += letter
 
         return self.alteredString
 
@@ -46,15 +40,12 @@ class CaesarCipher:
         for letter in string:
             if isUppercase(letter):
                 index = self.lowercase.index(letter)
-                self.alteredList.append((self.uppercase[((index - self.key) % ALPHABET_LETTERS) + ALPHABET_LETTERS]) % ALPHABET_LETTERS)
+                self.alteredString += (self.uppercase[((index + self.key) % ALPHABET_LETTERS)])
             elif isLowercase(letter):
                 index = self.uppercase.index(letter)
-                self.alteredList.append((self.lowercase[((index - self.key) % ALPHABET_LETTERS) + ALPHABET_LETTERS]) % ALPHABET_LETTERS)
+                self.alteredString += ((self.lowercase[((index + self.key) % ALPHABET_LETTERS)]))
             else:
-                self.alteredList.append(letter)
-
-            for elem in self.alteredList:
-                self.alteredString += elem
+                self.alteredString += letter
 
         return self.alteredString
 
@@ -86,10 +77,8 @@ class VigenereCipher():
         c = 0
         for letter in string:
             index = self.key[c % self.keySize]
-            self.alteredList.append(self.encryptLetter(letter, index))
+            self.alteredString += (self.encryptLetter(letter, index))
             c += 1
-        for elem in self.alteredList:
-            self.alteredString += elem
 
         return self.alteredString
 
@@ -98,10 +87,8 @@ class VigenereCipher():
 
         for letter in string:
             index = self.key[c % self.keySize]
-            self.alteredList.append(self.decryptLetter(letter, index))
+            self.alteredString += (self.decryptLetter(letter, index))
             c += 1
-        for elem in self.alteredList:
-            self.alteredString += elem
 
         return self.alteredString
 
