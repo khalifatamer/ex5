@@ -24,29 +24,35 @@ class CaesarCipher:
 
 
     def encrypt(self, string):
+        self.alteredString = ""
+        self.alteredList = []
         for letter in string:
             if isUppercase(letter):
                 index = self.uppercase.index(letter)
-                self.alteredString += ((self.uppercase[((index + self.key) % ALPHABET_LETTERS)]))
+                self.alteredList.append((self.uppercase[((index + self.key) % ALPHABET_LETTERS)]))
             elif isLowercase(letter):
                 index = self.lowercase.index(letter)
-                self.alteredString += ((self.lowercase[((index + self.key) % ALPHABET_LETTERS)]))
+                self.alteredList.append((self.lowercase[((index + self.key) % ALPHABET_LETTERS)]))
             else:
                 self.alteredString += letter
 
+        self.alteredString = "".join(self.alteredList)
         return self.alteredString
 
     def decrypt(self, string):
+        self.alteredString = ""
+        self.alteredList = []
         for letter in string:
             if isUppercase(letter):
-                index = self.lowercase.index(letter)
-                self.alteredString += (self.uppercase[((index + self.key) % ALPHABET_LETTERS)])
-            elif isLowercase(letter):
                 index = self.uppercase.index(letter)
-                self.alteredString += ((self.lowercase[((index + self.key) % ALPHABET_LETTERS)]))
+                self.alteredList.append((self.uppercase[((index - self.key) % ALPHABET_LETTERS)])) #replaced (index + self.key) with (index - self.key)
+            elif isLowercase(letter):
+                index = self.lowercase.index(letter)
+                self.alteredList.append((self.lowercase[((index - self.key) % ALPHABET_LETTERS)])) #replaced (index + self.key) with (index - self.key)
             else:
                 self.alteredString += letter
 
+        self.alteredString = "".join(self.alteredList)
         return self.alteredString
 
     def changeKey(self, newKey):
@@ -65,7 +71,7 @@ class VigenereCipher():
 
     def encryptLetter(self, letter, oneTimeKey):
         self.cipher.changeKey(oneTimeKey)
-        alteredLetter = self.cipher.encrypt(letter)
+        alteredLetter = self.cipher.encrypt(letter) # this is the problem
         return alteredLetter
 
     def decryptLetter(self, letter, oneTimeKey):
@@ -77,8 +83,10 @@ class VigenereCipher():
         c = 0
         for letter in string:
             index = self.key[c % self.keySize]
-            self.alteredString += (self.encryptLetter(letter, index))
+            self.encryptLetter(letter, index)
+            self.alteredList.append(self.encryptLetter(letter, index))
             c += 1
+        self.alteredString = "".join(self.alteredList)
 
         return self.alteredString
 
@@ -127,8 +135,8 @@ def processDirectory(dir_path):
                                 data = caesar_cipher.encrypt(data)
                             elif loaded_dict['type'] == "Vigenere":
                                 data = vigenere_cipher.encrypt(data)
-                            filename -= ".txt"
-                            with open(filename + ".enc", "w") as w:
+                            new_filename = filename.replace(".txt",".enc")
+                            with open(new_filename, "w") as w:
                                 w.write(data)
 
     if loaded_dict['mode'] == "decrypt":
@@ -137,9 +145,9 @@ def processDirectory(dir_path):
                         with open(file_path, "r") as f:
                             data = f.read()
                             if loaded_dict['type'] == "Caesar":
-                                data = caesar_cipher.decrypt(data)
+                                temp_data = caesar_cipher.decrypt(data)
                             elif loaded_dict['type'] == "Vigenere":
-                                data = vigenere_cipher.decrypt(data)
-                            filename -= ".enc"
-                            with open(filename + ".txt", "w") as w:
-                                w.write(data)
+                                temp_data = vigenere_cipher.decrypt(data)
+                            new_filename = filename.replace(".enc",".txt")
+                            with open(new_filename, "w") as w:
+                                w.write(temp_data)
