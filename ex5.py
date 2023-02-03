@@ -34,7 +34,7 @@ class CaesarCipher:
                 index = self.lowercase.index(letter)
                 self.alteredList.append((self.lowercase[((index + self.key) % ALPHABET_LETTERS)]))
             else:
-                self.alteredString += letter
+                self.alteredList.append(letter)
 
         self.alteredString = "".join(self.alteredList)
         return self.alteredString
@@ -50,7 +50,7 @@ class CaesarCipher:
                 index = self.lowercase.index(letter)
                 self.alteredList.append((self.lowercase[((index - self.key) % ALPHABET_LETTERS)])) #replaced (index + self.key) with (index - self.key)
             else:
-                self.alteredString += letter
+                self.alteredList.append(letter)
 
         self.alteredString = "".join(self.alteredList)
         return self.alteredString
