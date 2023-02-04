@@ -85,7 +85,8 @@ class VigenereCipher():
             index = self.key[c % self.keySize]
             self.encryptLetter(letter, index)
             self.alteredList.append(self.encryptLetter(letter, index))
-            c += 1
+            if isLowercase(letter) or isUppercase(letter):
+                c += 1
         self.alteredString = "".join(self.alteredList)
 
         return self.alteredString
@@ -96,7 +97,8 @@ class VigenereCipher():
         for letter in string:
             index = self.key[c % self.keySize]
             self.alteredString += (self.decryptLetter(letter, index))
-            c += 1
+            if isLowercase(letter) or isUppercase(letter):
+                c += 1
 
         return self.alteredString
 
