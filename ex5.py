@@ -81,6 +81,8 @@ class VigenereCipher():
 
     def encrypt(self, string):
         c = 0
+        self.alteredString = ""
+        self.alteredList = []
         for letter in string:
             index = self.key[c % self.keySize]
             self.encryptLetter(letter, index)
@@ -93,7 +95,8 @@ class VigenereCipher():
 
     def decrypt(self, string):
         c = 0
-
+        self.alteredString = ""
+        self.alteredList = []
         for letter in string:
             index = self.key[c % self.keySize]
             self.alteredString += (self.decryptLetter(letter, index))
