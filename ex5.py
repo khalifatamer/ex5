@@ -25,34 +25,30 @@ class CaesarCipher:
 
     def encrypt(self, string):
         self.alteredString = ""
-        self.alteredList = []
         for letter in string:
             if isUppercase(letter):
                 index = self.uppercase.index(letter)
-                self.alteredList.append((self.uppercase[((index + self.key) % ALPHABET_LETTERS)]))
+                self.alteredString += ((self.uppercase[((index + self.key) % ALPHABET_LETTERS)]))
             elif isLowercase(letter):
                 index = self.lowercase.index(letter)
-                self.alteredList.append((self.lowercase[((index + self.key) % ALPHABET_LETTERS)]))
+                self.alteredString += ((self.lowercase[((index + self.key) % ALPHABET_LETTERS)]))
             else:
-                self.alteredList.append(letter)
+                self.alteredString += letter
 
-        self.alteredString = "".join(self.alteredList)
         return self.alteredString
 
     def decrypt(self, string):
         self.alteredString = ""
-        self.alteredList = []
         for letter in string:
             if isUppercase(letter):
                 index = self.uppercase.index(letter)
-                self.alteredList.append((self.uppercase[((index - self.key) % ALPHABET_LETTERS)])) #replaced (index + self.key) with (index - self.key)
+                self.alteredString += ((self.uppercase[((index - self.key) % ALPHABET_LETTERS)])) 
             elif isLowercase(letter):
                 index = self.lowercase.index(letter)
-                self.alteredList.append((self.lowercase[((index - self.key) % ALPHABET_LETTERS)])) #replaced (index + self.key) with (index - self.key)
+                self.alteredString += ((self.lowercase[((index - self.key) % ALPHABET_LETTERS)])) 
             else:
-                self.alteredList.append(letter)
+                self.alteredString += (letter)
 
-        self.alteredString = "".join(self.alteredList)
         return self.alteredString
 
     def changeKey(self, newKey):
@@ -70,11 +66,15 @@ class VigenereCipher():
         self.cipher = CaesarCipher(0)
 
     def encryptLetter(self, letter, oneTimeKey):
+        if not(isUppercase(letter) or isLowercase(letter)):
+            return letter
         self.cipher.changeKey(oneTimeKey)
-        alteredLetter = self.cipher.encrypt(letter) # this is the problem
+        alteredLetter = self.cipher.encrypt(letter)
         return alteredLetter
 
     def decryptLetter(self, letter, oneTimeKey):
+        if not(isUppercase(letter) or isLowercase(letter)):
+            return letter
         self.cipher.changeKey(oneTimeKey)
         alteredLetter = self.cipher.decrypt(letter)
         return alteredLetter
@@ -85,7 +85,7 @@ class VigenereCipher():
         self.alteredList = []
         for letter in string:
             index = self.key[c % self.keySize]
-            self.encryptLetter(letter, index)
+            #self.encryptLetter(letter, index)
             self.alteredList.append(self.encryptLetter(letter, index))
             if isLowercase(letter) or isUppercase(letter):
                 c += 1
